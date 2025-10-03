@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout(~{::title}, ~{::div.content})}">
+<head>
+    <title>Lista de Livros</title>
+</head>
+<body>
+<div class="content">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1>Todos os Livros</h1>
+        <a th:href="@{/livros/novo}" class="btn btn-primary">Adicionar Novo Livro</a>
+    </div>
+
+    <div th:if="${mensagem}" class="alert alert-success" th:text="${mensagem}"></div>
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Título</th>
+            <th>Autor</th>
+            <th>Ano</th>
+            <th>Status</th>
+            <th>Ações</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="livro : ${livros}">
+            <td th:text="${livro.id}"></td>
+            <td th:text="${livro.titulo}"></td>
+            <td th:text="${livro.autor}"></td>
+            <td th:text="${livro.anoPublicacao}"></td>
+            <td>
+                <span th:text="${livro.status.descricao}"
+                      th:classappend="${livro.status.name() == 'DISPONIVEL'} ? 'text-success' : 'text-danger'"
+                      class="fw-bold">
+                </span>
+            </td>
+            <td>
+                <a th:href="@{/livros/editar/{id}(id=${livro.id})}" class="btn btn-sm btn-warning">Editar</a>
+                <a th:href="@{/livros/excluir/{id}(id=${livro.id})}" class="btn btn-sm btn-danger"
+                   onclick="return confirm('Tem certeza que deseja excluir?');">Excluir</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

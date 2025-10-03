@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout(~{::title}, ~{::div.content})}">
+<head>
+    <title>Novo Empréstimo</title>
+</head>
+<body>
+<div class="content">
+    <h1>Registrar Novo Empréstimo</h1>
+
+    <form th:action="@{/emprestimos/salvar}" th:object="${emprestimo}" method="post">
+
+        <div class="mb-3">
+            <label for="livro" class="form-label">Livro (Apenas disponíveis)</label>
+            <select class="form-select" id="livro" th:field="*{livro}">
+                <option value="">Selecione um livro</option>
+                <option th:each="livro : ${livrosDisponiveis}"
+                        th:value="${livro.id}"
+                        th:text="${livro.titulo} + ' - ' + ${livro.autor}"></option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="usuario" class="form-label">Usuário</label>
+            <select class="form-select" id="usuario" th:field="*{usuario}">
+                <option value="">Selecione um usuário</option>
+                <option th:each="usuario : ${usuarios}"
+                        th:value="${usuario.id}"
+                        th:text="${usuario.nome}">
+
+                </option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="dataPrevistaDevolucao" class="form-label">Data Prevista para Devolução</label>
+            <input type="date" class="form-control" id="dataPrevistaDevolucao" th:field="*{dataPrevistaDevolucao}" />
+            <div class="text-danger" th:if="${#fields.hasErrors('dataPrevistaDevolucao')}" th:errors="*{dataPrevistaDevolucao}"></div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Registrar Empréstimo</button>
+        <a th:href="@{/emprestimos}" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>
+</body>
+</html>
